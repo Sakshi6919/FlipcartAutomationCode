@@ -1,0 +1,72 @@
+package Selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class FlipcartScenario {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		//1. Open https://www.flipkart.com/
+
+
+		System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Java\\SelenuimDriver\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("https://www.flipkart.com/");
+		driver.manage().window().maximize();
+		
+		//2. Search for the product you like(Any phones)
+
+		driver.findElement(By.xpath("//button[@class='_2KpZ6l _2doB4z']")).click();
+		WebElement  search =driver.findElement(By.xpath("//input[@class='_3704LK']"));
+		search.sendKeys("samsung s10 plus");
+		search.sendKeys(Keys.ENTER);
+		
+		
+         Thread.sleep(2000);
+         
+         //3. Click on the first item from the list
+         driver.findElement(By.xpath("//div[contains(text(),'SAMSUNG Galaxy S10 Plus (Ceramic Black, 512 GB)')]")).click();
+	    
+		String winHandleBefore = driver.getWindowHandle();
+
+	    for(String winHandle : driver.getWindowHandles()){
+	    driver.switchTo().window(winHandle);}
+	    
+        // 4. Print the price of the item
+
+        WebElement element =driver.findElement(By.xpath("//div[@Class='_30jeq3 _16Jk6d']"));
+	    String Price =element.getText();
+	    System.out.println("Price " +Price);
+	   
+	    // 5. Add to cart in guest mode and 6. Go to the cart page
+
+	    driver.findElement(By.xpath("//button[@Class='_2KpZ6l _2U9uOA _3v1-ww']")).click();
+	    		
+	    WebDriverWait wait = new WebDriverWait (driver, 30);
+	    
+        
+        // 7. Increase the quantity by 1
+
+	    WebElement ele =wait.until(ExpectedConditions.visibilityOfElementLocated
+	  	(By.xpath("//body/div[@id='container']/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[3]/div[1]/div[1]/button[2]")));
+	    ele.click();
+	    
+        Thread.sleep(1000);
+
+       // 8. Print the price after addition of quantity
+
+	    WebElement Increase_element =driver.findElement(By.xpath("//div[@Class='Ob17DV _3X7Jj1']//span"));
+	    String New_price =Increase_element.getText();
+	    System.out.println("Price " +New_price);
+	    
+	    
+}
+}
